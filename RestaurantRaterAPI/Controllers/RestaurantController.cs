@@ -19,7 +19,7 @@ namespace RestaurantRaterAPI.Controllers
         {
             if (model is null)
             {
-                return BadRequest("Your request body cannot be empty");
+                return BadRequest("Your request body cannot be empty.");
             }
             if (ModelState.IsValid)
             {
@@ -54,7 +54,36 @@ namespace RestaurantRaterAPI.Controllers
             return Ok();
         }
         //-- Update (PUT)
+        [HttpPut]
+        public async Task<IHttpActionResult> UpdateRestaurant([FromUri]int id, [FromBody]Restaurant updatedRestaurant)
+        {
+            // Check if our updated restaurant is valid
+            if (ModelState.IsValid)
+            {
+                // Find and update the appropriate restaurant
+                Restaurant restaurant = await _context.Restaurants.FindAsync(id);
+
+                if (restaurant != null)
+                {
+                    // Update the restaurant now that we found it
+                    restaurant.Name = updatedRestaurant.Name;
+                    restaurant.Rating = updatedRestaurant.Rating;
+
+                    await _context.SaveChangesAsync();
+
+                    return Ok("Restaurant has been updated.");
+                }
+
+                // Didn't find the restuarant
+                return NotFound();
+            }
+
+            // Return a bad request
+            return BadRequest(ModelState);
+        }
 
         //-- Delete (DELETE)
+
+
     }
 }
