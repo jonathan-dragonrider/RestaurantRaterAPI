@@ -37,7 +37,8 @@ namespace RestaurantRaterAPI.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetById(int id)
         {
-            Restaurant restaurant = await _context.Restaurants.FindAsync(id);
+            List<Restaurant> restaurants = await _context.Restaurants.ToListAsync();
+            Restaurant restaurant = restaurants.FirstOrDefault(r => r.Id == id);
 
             if (restaurant != null)
             {
