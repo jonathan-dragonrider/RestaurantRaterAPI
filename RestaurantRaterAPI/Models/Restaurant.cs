@@ -9,6 +9,7 @@ namespace RestaurantRaterAPI.Models
     // Restaurant Entity (The class that gets stored in the database)
     public class Restaurant
     {
+        // Primary Key
         [Key]
         public int Id { get; set; }
 
