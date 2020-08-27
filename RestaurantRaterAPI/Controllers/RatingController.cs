@@ -1,6 +1,7 @@
 ﻿using RestaurantRaterAPI.Models;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -40,9 +41,28 @@ namespace RestaurantRaterAPI.Controllers
             return InternalServerError();
         }
 
-        // Get a rating by its ID?
+        // Get a rating by its ID
+        [HttpGet]
+        public async Task<IHttpActionResult> GetRatingById(int id)
+        {
+            List<Rating> ratings = await _context.Ratings.ToListAsync();
+            Rating rating = ratings.FirstOrDefault(r => r.Id == id);
+
+            if (rating != null)
+            {
+                return Ok(rating);
+            }
+
+            return NotFound();
+        }
 
         // Get all ratings for a specific restaurant ID
+        [HttpGet]
+        public async Task<IHttpActionResult> GetRatingsByRestaurant(int restaurantId)
+        {
+            List<Restaurant> restaurants = await _context.Restaurants.ToListAsync();
+            return Ok();
+        }
 
         // Update Rating
 
